@@ -4,4 +4,6 @@ set -ex
 
 # cabal init
 cabal build
-cabal run 
+mkdir -p bin
+cp ./dist-newstyle/build/x86_64-osx/ghc-8.8.3/haq-0.1.0.0/x/haq/build/haq/haq bin
+./bin/haq $@
