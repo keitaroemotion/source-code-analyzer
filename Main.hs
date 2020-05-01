@@ -31,21 +31,33 @@ main = do
     let parsedArgs= [lines x | x <- splitOn "-" $ unlines args, x /= ""]
 
     case parsedOptions !! 0 of
-        "-lc"      -> countLines(parsedArgs)
+        "-lc"      -> countLinesFromParsedArgs(parsedArgs)
         "--groovy" -> return ()
         otherwise  -> return ()
 
     return ()
 
 data Directory = Directory String | Nothing
-countLines :: [[String]] -> IO ()
-countLines parsedArgs = do
-                        print dirPath
-                        -- need to check if path is dir/not and whether the dir exist or not.
-                        return ()
-                        where 
-                           targetArgs = [x | x <- parsedArgs, x !! 0 == "lc"] !! 0
-                           dirPath    = getDirPath targetArgs 
+
+-- need to check if path is dir/not and whether the dir exist or not.
+countLinesFromParsedArgs :: [[String]] -> IO ()
+countLinesFromParsedArgs parsedArgs = do
+    countLines dirPath
+    return ()
+    where 
+       targetArgs = [x | x <- parsedArgs, x !! 0 == "lc"] !! 0
+       dirPath    = getDirPath targetArgs 
+
+countLines :: String -> IO Int
+countLines filePath = do
+    isFile <- doesFileExist filePath
+    if isFile
+        then do contents <- readFile filePath
+                print contents
+                pure 0
+        else do files <- getDirectoryContents filePath    
+                [countLines(file) | file <- files]
+                pure 0
 
 getDirPath :: [String] -> String
 getDirPath targetArgs
