@@ -45,5 +45,10 @@ countLines parsedArgs = do
                         return ()
                         where 
                            targetArgs = [x | x <- parsedArgs, x !! 0 == "lc"] !! 0
-                           dirPath    = targetArgs !! 1
+                           dirPath    = getDirPath targetArgs 
+
+getDirPath :: [String] -> String
+getDirPath targetArgs
+    | length targetArgs > 1 = targetArgs !! 1
+    | otherwise             = "."
 
