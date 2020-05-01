@@ -12,11 +12,11 @@ import System.Exit
 main :: IO ()
 main = do
     -- First, need to extract the action param, which starts from '-'
-    -- -l        ... wordCount analyzer 
+    -- -wc       ... wordCount analyzer 
     -- --groovy  ... groocy syntax analyzer
 
     args <- getArgs
-    let bigOptions    = ["-l", "--groovy"]
+    let bigOptions    = ["-lc", "--groovy"]
     let parsedOptions = [x | x <- args, x `elem` bigOptions]
 
     if length parsedOptions > 1
